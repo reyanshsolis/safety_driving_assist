@@ -43,14 +43,30 @@ from collections import OrderedDict
 from imutils.video import VideoStream
 from imutils.video import FileVideoStream
 from scipy.spatial import distance as dist
+
+SHAPE_PREDICTOR_PATH = "/home/rey/shape_predictor_68_face_landmarks.dat"
 ```
-Files are imported into the program
+Files are imported into the program and path for trained wights is provided
 
+```
+def eye_aspect_ratio(eye):
 
+    vertical_A = dist.euclidean(eye[1], eye[5])
+    vertical_B = dist.euclidean(eye[2], eye[4])
+    horizontal_C = dist.euclidean(eye[0], eye[3])
+    ear = (vertical_A + vertical_B) / (2.0 * horizontal_C)
+    return ear
+```
+The function returns euclidean distances between the two sets of vertical and horizontal eye landmarks in cartesian coordinates. Next it computes the eye aspect ratio and return the same.
 
+```
+def get_landmarks(im):
+    rects = detector(im, 1)
 
-
-
-
-
+    if len(rects) > 1:
+        return "error"
+    if len(rects) == 0:
+        return "error"
+    return np.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])
+```
 
