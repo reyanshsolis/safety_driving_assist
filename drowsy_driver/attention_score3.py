@@ -21,7 +21,7 @@ from scipy.spatial import distance as dist
 
 
 # Define the shape predictor and alarm audio file
-SHAPE_PREDICTOR_PATH = "/home/rey/shape_predictor_68_face_landmarks.dat"
+SHAPE_PREDICTOR_PATH = "/home/hamhub/Downloads/shape_predictor_68_face_landmarks.dat"
 #ALARM_AUDIO_PATH = './alarm.wav'
 
 
