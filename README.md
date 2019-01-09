@@ -9,33 +9,8 @@ This keeps maintains an Attention Score based on Blinking Rate and Yawning of Dr
 
 Dlib is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems. See [http://dlib.net](http://dlib.net) for the main project documentation and API reference.
 
+We are using the python for coding on **PYNQ** board. Hence dlib's python API is installed.
 
-
-## Compiling dlib C++ example programs
-
-Go into the examples folder and type:
-
-```bash
-mkdir build; cd build; cmake .. ; cmake --build .
-```
-
-That will build all the examples.
-If you have a CPU that supports AVX instructions then turn them on like this:
-
-```bash
-mkdir build; cd build; cmake .. -DUSE_AVX_INSTRUCTIONS=1; cmake --build .
-```
-
-Doing so will make some things run faster.
-
-Finally, Visual Studio users should usually do everything in 64bit mode.  By default Visual Studio is 32bit, both in its outputs and its own execution, so you have to explicitly tell it to use 64bits.  Since it's not the 1990s anymore you probably want to use 64bits.  Do that with a cmake invocation like this:
-```bash
-cmake .. -G "Visual Studio 14 2015 Win64" -T host=x64 
-```
-
-## Compiling your own C++ programs that use dlib
-
-The examples folder has a [CMake tutorial](https://github.com/davisking/dlib/blob/master/examples/CMakeLists.txt) that tells you what to do.  There are also additional instructions on the [dlib web site](http://dlib.net/compile.html).
 
 ## Compiling dlib Python API
 
@@ -46,23 +21,36 @@ python setup.py install
 ```
 
 
-## Running the unit test suite
+# CAN Protocol 
+###  KVASER installation [Link](https://www.kvaser.com/linux-drivers-and-sdk/)
 
-Type the following to compile and run the dlib unit test suite:
-
-```bash
-cd dlib/test
-mkdir build
-cd build
-cmake ..
-cmake --build . --config Release
-./dtest --runall
-```
-
-#CAN Protocol 
-### Link for KVASER drivers- https://www.kvaser.com/linux-drivers-and-sdk/
-
-### Link for canLib installation - https://www.youtube.com/watch?v=Gz-lIVIU7ys&feature=youtu.be
+### CANLib installation [Link](https://www.youtube.com/watch?v=Gz-lIVIU7ys&feature=youtu.be)
  
+
+#### Now we are fully equiped to understand and implement our code.
+
+## Explanation of code module-wise
+
+```
+import cv2
+import dlib
+import time
+import imutils
+import argparse
+import numpy as np
+from threading import Thread
+from collections import OrderedDict
+from imutils.video import VideoStream
+from imutils.video import FileVideoStream
+from scipy.spatial import distance as dist
+```
+Files are imported into the program
+
+
+
+
+
+
+
 
 
