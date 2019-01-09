@@ -28,3 +28,13 @@ python setup.py install
  
 
 #### Now we are fully equiped to understand and implement our code.
+
+## Explanation of code module-wise
+
+
+
+
+
+
+
+
