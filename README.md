@@ -1,4 +1,4 @@
-# DRROWSY-DRIVER
+# DROWSY-DRIVER
 
 This is an Attention Score based algorithm based on Blinking Rate and Yawning of the  Driver, based on which it warns him as well as takes the control of the vehicle if the Attention score fall below certain level. This is acheived on hardware level by using  CAN protocol to control Vehicle autonomously. 
 
