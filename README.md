@@ -308,7 +308,10 @@ Master code of this program - It gets the yawn status and counts the number of f
         else:
             FRAME_COUNTER_EYES = 0
             IS_ALARM_ON = False
-            
+```
+This fragment of the code computes the area of eyes and decides the drowsiness of the driver. It also ammends the attention score but with a very low weight as compared to that of a yawn. It checks if the eyes are closed for sufficient amount of time as well.
+
+```
         # draw the computed eye aspect ratio for the frame
         cv2.putText(frame, "EAR: {:.2f}".format(avgEAR), (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         output_text = " Attention Score " + str(AttentionScore)
@@ -327,4 +330,4 @@ Master code of this program - It gets the yawn status and counts the number of f
 cv2.destroyAllWindows()
 vs.stop()
 ```
-
+This is the last part of the code which combines all the above modeules into one program and displays the live result on the screen.
