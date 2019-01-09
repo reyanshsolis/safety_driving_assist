@@ -32,6 +32,7 @@ def eye_aspect_ratio(eye):
     # return the eye aspect ratio
     return ear
 
+# Funtion to get generate landmarks on face from a pre-trained model predictor
 def get_landmarks(im):
     rects = detector(im, 1)
 
@@ -41,6 +42,7 @@ def get_landmarks(im):
         return "error"
     return np.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])
 
+# Copy the landmarks on the image frame and return
 def annotate_landmarks(im, landmarks):
     im = im.copy()
     for idx, point in enumerate(landmarks):
