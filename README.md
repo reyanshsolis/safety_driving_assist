@@ -21,10 +21,10 @@ python setup.py install
 ```
 
 
-#CAN Protocol 
+# CAN Protocol 
 ###  KVASER installation [Link](https://www.kvaser.com/linux-drivers-and-sdk/)
 
 ### CANLib installation [Link](https://www.youtube.com/watch?v=Gz-lIVIU7ys&feature=youtu.be)
  
 
-####Now we are fully equiped to understand and implement our code.
+#### Now we are fully equiped to understand and implement our code.
