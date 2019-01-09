@@ -1,20 +1,69 @@
-# drowsy_driver
-This keeps maintains an Attention Score based on Blinking Rate and Yawning of Driver, based on which it Warns him takes control of the vehicle if Attention score fall below certain level using CAN protocol to control Vehicle autonomously. 
+# DRROWSY-DRIVER
 
-Eye state classification using OpenCV and DLib to estimate Percentage Eye Closure (PERCLOS) and alert a drowsy person (such as a driver).
-Dependencies:
+This is an Attention Score based algorithm based on Blinking Rate and Yawning of the  Driver, based on which it warns him as well as takes the control of the vehicle if the Attention score fall below certain level. This is acheived on hardware level by using  CAN protocol to control Vehicle autonomously. 
 
-... 1. OpenCV (3.0 or later) ... 2. Dlib (19.0 or later, for facial landmarking)
-Using aspect ratio of major/minor axes (cpp)
+Eye state classification using OpenCV and DLib to estimate Percentage Eye Closure as well Yawn detection using DLib and OpenCV.
 
 Uses DLib facial landmark detector to find the major and minor axes of eyes, as well as mouth. The aspect ratio of major to minor axes is used to determine whether eye/mouth is open; which allows for eye-state classification and yawning detection. Requires a pre-trained DLib facial landmark detector model in a .dat file.
 
+# Pseudo Code
+```
+Pseudo Code : 
+
+Attention Score determining Algorithm (assuming 30fps):
+
+Assign Initial Positive Attention Max. Score : 80000
+Define Warning Level : 8000
+Define AutoBrake Level : 4000
+
+checkWarning : 
+	if Attention Score < 8000
+		Display WARNING
+	if Attention Score < 4000
+		Take Control and Slow Down Vehicle
 
 
-#DLIB
+If Yawn and Blink is not detected in a Frame
+	Attention Score += 60
+
+If Blink is Detected
+	Attention Score -= 20 x Frame Counter
+If Yawn is Detected in a frame
+	Attention Score -= 2 x Frame Counter for Yawn
+	checkWarning()
+_______________________________________________________
+_______________________________________________________
+
+Code Flow ->
+
+read frame from camera
+convert into grayscale 
+identify face landmark using dlib
+
+yawn detection:
+	distance between lips > yawning threshold
+		Frame Counter (with Yawn Detected) ++
+		if Yawning in Continuos Number of Frames > Threshold
+			Attention Score -=2x Frame Counter
+			checkWarning // check warning status after each score update
+If Yawn and Blink is not detected in a Frame
+	Attention Score += 60 (if Attention Score < Fixed Maximum Score)
+	checkWarning // check warning status after each score update
+
+Eye Blinking detection:
+	Using PERCLOS
+	Eyes aspect ratio < Average aspect ratio (parameter)
+	Blink is detected
+		if Bink is detected continuously for Threshold no. of frames
+			Drowsiness Detected
+			Attention Score -=20 x Frame Counter
+			checkWarning // check warning status after each score update
+```
+
+# Setup and Dependecies
 
 
-# dlib C++ library [![Travis Status](https://travis-ci.org/davisking/dlib.svg?branch=master)](https://travis-ci.org/davisking/dlib)
+## dlib library [![Travis Status](https://travis-ci.org/davisking/dlib.svg?branch=master)](https://travis-ci.org/davisking/dlib)
 
 Dlib is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems. See [http://dlib.net](http://dlib.net) for the main project documentation and API reference.
 
@@ -30,13 +79,14 @@ python setup.py install
 ```
 
 
-# CAN Protocol 
+## Controller Area Network(CAN) Protocol 
+
 ###  KVASER installation [Link](https://www.kvaser.com/linux-drivers-and-sdk/)
 
 ### CANLib installation [Link](https://www.youtube.com/watch?v=Gz-lIVIU7ys&feature=youtu.be)
  
 
-#### Now we are fully equiped to understand and implement our code.
+### Now we are fully equiped to understand and implement our code.
 
 ## Explanation of code module-wise
 
@@ -331,3 +381,10 @@ cv2.destroyAllWindows()
 vs.stop()
 ```
 This is the last part of the code which combines all the above modeules into one program and displays the live result on the screen.
+
+
+
+
+
+
+
