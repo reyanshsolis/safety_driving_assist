@@ -101,7 +101,7 @@ AttentionScoreMax = 80000
 AttentionScore = AttentionScoreMax
 #Warning Level
 WarningLevel = 40000
-autoBrakeLevel = 1000
+autoBrakeLevel = 6000
 #error frame 
 error_frame_thres = 2
 YAWN_MIN_FRAME_COUNT = 10
