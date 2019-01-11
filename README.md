@@ -189,11 +189,11 @@ IS_ALARM_ON = False
 #yawning distance threshold 
 YAWN_DIST = 26
 #Maximum Positive Attention Score : 
-AttentionScoreMax = 10000
+AttentionScoreMax = 80000
 AttentionScore = AttentionScoreMax
 #Warning Level
-WarningLevel = 4000
-autoBrakeLevel = 2000
+WarningLevel = 40000
+autoBrakeLevel = 6000
 #error frame 
 error_frame_thres = 2
 YAWN_MIN_FRAME_COUNT = 10
@@ -302,6 +302,7 @@ while True:
         yawn_status == False
         if (AttentionScore < AttentionScoreMax):
             AttentionScore +=10
+            checkWarning()
             
     if prev_yawn_status == True and yawn_status == False:
         yawns += 1
@@ -346,6 +347,7 @@ Master code of this program - It gets the yawn status and counts the number of f
                 cv2.putText(frame, 'DROWSINESS ALERT!!!', (10, 30), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 AttentionScore-=20*FRAME_COUNTER_EYES
+                checkWarning()
             
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
@@ -377,7 +379,25 @@ vs.stop()
 This is the last part of the code which combines all the above modeules into one program and displays the live result on the screen.
 
 
+============================================
 
+The Project has Two Models : 
+
+Model 1 :  (ALERT/WARNING Signals Part can be implemented by *anyone on any Car with Music System*)
+
+    Attention Score is determined on the basis of alertness judged by blinking eyes pattern and yawing rate. 
+    WARNING SIGNALS (ALERT SOUND and HAZARD INDICATORS) are activated when Attention Score falls before a certain WARNING LEVEL.
+    If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](doc.link) is deployed to stop the vehicle and minimize the damage.
+
+Model 2:    (This Requires the Car to have [CAN-bus Interface](doc.here) for Autonomous Braking to work and Odometry sensors to return velocity)
+
+    It includes several improvements over first model.
+    *   Attention Score Penality rate takes **vehicle's velocity factor** into consideration, as the Attention Penality for closing eyes/yawning at high speed must be greater than that in low speed because of the higher level of required altertness at high speed. Example: Closing Eyes for 1sec at High Speed is much more significant than closing it at very low speed.
+    [ATTENTION SCORE ALGORITHM : MODEL 2](doc.here)
+    *   Improvised Braking Algorithm including factors such as Traffic and nearest object distance into cosideration with velocity of car, braking distance (including reaction time of driver and alertness level).
+    [BRAKING ALGORITHM : MODEL 2](doc.here)
+
+============================================
 
 
 
