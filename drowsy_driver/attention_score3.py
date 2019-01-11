@@ -1,4 +1,8 @@
-# Program to determine the alertness of a driver while driving.  
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
 
 import cv2
 import dlib
@@ -12,7 +16,17 @@ from imutils.video import VideoStream
 from imutils.video import FileVideoStream
 from scipy.spatial import distance as dist
 
-SHAPE_PREDICTOR_PATH = "/home/rey/shape_predictor_68_face_landmarks.dat"
+
+# In[2]:
+
+
+# Define the shape predictor and alarm audio file
+SHAPE_PREDICTOR_PATH = "/home/hamhub/Downloads/shape_predictor_68_face_landmarks.dat"
+#ALARM_AUDIO_PATH = './alarm.wav'
+
+
+# In[3]:
+
 
 # Compute the ratio of eye landmark distances to determine if a person is blinking
 def eye_aspect_ratio(eye):
@@ -31,7 +45,10 @@ def eye_aspect_ratio(eye):
     # return the eye aspect ratio
     return ear
 
-# Funtion to get generate landmarks on face from a pre-trained model predictor
+
+# In[4]:
+
+
 def get_landmarks(im):
     rects = detector(im, 1)
 
@@ -41,7 +58,6 @@ def get_landmarks(im):
         return "error"
     return np.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])
 
-# Copy the landmarks on the image frame and return
 def annotate_landmarks(im, landmarks):
     im = im.copy()
     for idx, point in enumerate(landmarks):
@@ -53,7 +69,10 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-#Compute and put landmarks on the top lip
+
+# In[5]:
+
+
 def top_lip(landmarks):
     top_lip_pts = []
     for i in range(50,53):
@@ -64,7 +83,6 @@ def top_lip(landmarks):
     top_lip_mean = np.mean(top_lip_pts, axis=0)
     return int(top_lip_mean[:,1])
 
-#Compute and put landmarks on the bottom lip
 def bottom_lip(landmarks):
     bottom_lip_pts = []
     for i in range(65,68):
@@ -75,7 +93,6 @@ def bottom_lip(landmarks):
     bottom_lip_mean = np.mean(bottom_lip_pts, axis=0)
     return int(bottom_lip_mean[:,1])
 
-#Find the distance between the top and bottom lips
 def mouth_open(image):
     landmarks = get_landmarks(image)
     
@@ -88,6 +105,10 @@ def mouth_open(image):
     lip_distance = abs(top_lip_center - bottom_lip_center)
     return image_with_landmarks, lip_distance
 
+
+# In[6]:
+
+
 # Constant for the eye aspect ratio to indicate drowsiness 
 EYE_AR_THRESH = 0.25
 # Constant for the number of consecutive frames the eye (closed) must be below the threshold
@@ -97,38 +118,39 @@ FRAME_COUNTER = 0
 # Boolean to indicate if the alarm is going off
 IS_ALARM_ON = False
 #yawning distance threshold 
-YAWN_DIST = 26
+YAWN_DIST = 40
 #Maximum Positive Attention Score : 
-
-AttentionScoreMax = 80000
-AttentionScore = AttentionScoreMax
+AttentionScore = 10000
 #Warning Level
-WarningLevel = 40000
-autoBrakeLevel = 6000
+WarningLevel = 4000
+autoBrakeLevel = 2000
 #error frame 
 error_frame_thres = 2
 YAWN_MIN_FRAME_COUNT = 10
 
-# Funtion printing alert warning on screen and return attenion score of driver
-# Compare the attention score and threshold attention level  
+
+# In[7]:
+
+
 def warningAlert():
     print (" WARNING ALERT !!! ")
-    output_text = " Attention Score " + str(AttentionScore)
-    cv2.putText(frame,output_text,(150,150),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
     return
 
-def autoBrakeAlert():
+
+def autoBrakeLevel():
     print (" AUTO BRAKE !!! ")
-    output_text = "AUTO BRAKE " + str(AttentionScore)
-    cv2.putText(frame,output_text,(200,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
     return
+
 
 def checkWarning():
     if(AttentionScore < WarningLevel):
         warningAlert()
     if(AttentionScore < autoBrakeLevel):
-        autoBrakeAlert()
-    return
+        autoBrake()
+
+
+# In[8]:
+
 
 # Take a bounding predicted by dlib and convert it
 # to the format (x, y, w, h) as normally handled in OpenCV
@@ -140,6 +162,10 @@ def rect_to_bb(rect):
     
     # return a tuple of (x, y, w, h)
     return (x, y, w, h)
+
+
+# In[9]:
+
 
 # The dlib face landmark detector will return a shape object 
 # containing the 68 (x, y)-coordinates of the facial landmark regions.
@@ -156,6 +182,10 @@ def shape_to_np(shape, dtype = 'int'):
     # return the list of (x, y)-coordinates
     return coords
 
+
+# In[10]:
+
+
 # define a dictionary that maps the indexes of the facial
 # landmarks to specific face regions
 FACIAL_LANDMARKS_IDXS = OrderedDict([
@@ -167,6 +197,10 @@ FACIAL_LANDMARKS_IDXS = OrderedDict([
     ("nose", (27, 35)),
     ("jaw", (0, 17))
 ])
+
+
+# In[11]:
+
 
 # initialize dlib's face detector (HOG-based)
 detector = dlib.get_frontal_face_detector()
@@ -185,53 +219,63 @@ fileStream = False
 
 time.sleep(1.0)
 
-# Variables for yawn detection and frame count are initialized 
+
+# In[12]:
+
 
 yawns = 0
 yawn_status = False 
 # loop over frames from the video stream
 
 
-FRAME_COUNTER_YAWN =0
-FRAME_COUNTER_EYES =0
-yawns = 0
+# In[13]:
 
-# Loop for reading frames and implementing algorithms in it
+
+def yawn_detection():
+    FRAME_COUNTER =0
+    error_frame =0
+    running = 1
+    while (running):
+        if(lip_distance > YAWN_DIST):
+            FRAME_COUNTER +=1
+        else:
+            error_frame +=1
+
+        if(FRAME_COUNTER > YAWN_MIN_FRAME_COUNT and error_frame < error_frame_thres):
+            AttentionScore -=100*FRAME_COUNTER
+            cv2.putText(frame, "Subject is Yawning",(50,450),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
+            output_text = " Yawn Count: " + str(yawns + 1)
+            cv2.putText(frame,output_text,(30,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,255,127),2)
+
+            checkWarning()
+        else:
+            yawn_status = False
+            return
+
+
+# In[ ]:
+
+
 while True:
-    global frame 
     frame = vs.read()
+    #frame = imutils.resize(frame, width = 450)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 0)
     image_landmarks, lip_distance = mouth_open(frame)
     
-    #Printing attention score and distance between lips
     prev_yawn_status = yawn_status  
     print ("lip distance: ", lip_distance)
     print ("AttentionScore: ", AttentionScore)
     
-    # Master code for yawn detection and attention scoring
-    # along with time of yawning
-    if (lip_distance > YAWN_DIST):
-        #start_time = time.time()
-        FRAME_COUNTER_YAWN +=1
-        yawn_status == True
-        print ("Frame Count: ", FRAME_COUNTER)
-
-        # Attention scorer part
-        if(FRAME_COUNTER_YAWN > YAWN_MIN_FRAME_COUNT): #and error_frame < error_frame_thres):
-                AttentionScore -=2*FRAME_COUNTER
-                cv2.putText(frame, "Subject is Yawning",(50,450),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
-                checkWarning()
-            
+    if lip_distance > YAWN_DIST:
+        yawn_status = True 
+        yawn_detection()
     else:
-        yawn_status == False
-        if (AttentionScore < AttentionScoreMax):
-            AttentionScore +=60
+        AttentionScore +=10;
 
                  
     if prev_yawn_status == True and yawn_status == False:
         yawns += 1
-        FRAME_COUNTER_YAWN = 0
 
     cv2.imshow('Live Landmarks', image_landmarks )
     cv2.imshow('Yawn Detection', frame )
@@ -261,25 +305,22 @@ while True:
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
         if avgEAR < EYE_AR_THRESH:
-            FRAME_COUNTER_EYES += 1
+            FRAME_COUNTER += 1
             
             # if the eyes were closed for a sufficient number of
             # then sound the alarm
-            if FRAME_COUNTER_EYES >= EYE_AR_CONSEC_FRAMES:
+            if FRAME_COUNTER >= EYE_AR_CONSEC_FRAMES:
                 cv2.putText(frame, 'DROWSINESS ALERT!!!', (10, 30), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                AttentionScore-=20*FRAME_COUNTER_EYES
             
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
         else:
-            FRAME_COUNTER_EYES = 0
+            FRAME_COUNTER = 0
             IS_ALARM_ON = False
             
         # draw the computed eye aspect ratio for the frame
         cv2.putText(frame, "EAR: {:.2f}".format(avgEAR), (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-        output_text = " Attention Score " + str(AttentionScore)
-        cv2.putText(frame,output_text,(30,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,255,127),2)
         #cv2.putText(frame, output_text, (30, 300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         
     # show the frame
@@ -293,3 +334,4 @@ while True:
 # Cleanup
 cv2.destroyAllWindows()
 vs.stop()
+
