@@ -78,13 +78,7 @@ Before you can run the Python example programs you must compile dlib. Type:
 python setup.py install
 ```
 
-
 ## Controller Area Network(CAN) Protocol 
-
-###  KVASER installation [Link](https://www.kvaser.com/linux-drivers-and-sdk/)
-
-### CANLib installation [Link](https://www.youtube.com/watch?v=Gz-lIVIU7ys&feature=youtu.be)
- 
 
 ### Now we are fully equiped to understand and implement our code.
 
@@ -381,7 +375,6 @@ cv2.destroyAllWindows()
 vs.stop()
 ```
 This is the last part of the code which combines all the above modeules into one program and displays the live result on the screen.
-
 
 
 

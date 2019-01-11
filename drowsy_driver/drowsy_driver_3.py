@@ -12,7 +12,6 @@ from imutils.video import VideoStream
 from imutils.video import FileVideoStream
 from scipy.spatial import distance as dist
 
-
 SHAPE_PREDICTOR_PATH = "/home/rey/shape_predictor_68_face_landmarks.dat"
 
 # Compute the ratio of eye landmark distances to determine if a person is blinking
@@ -100,33 +99,36 @@ IS_ALARM_ON = False
 #yawning distance threshold 
 YAWN_DIST = 26
 #Maximum Positive Attention Score : 
-AttentionScoreMax = 10000
+
+AttentionScoreMax = 80000
 AttentionScore = AttentionScoreMax
 #Warning Level
-WarningLevel = 4000
-autoBrakeLevel = 2000
+WarningLevel = 40000
+autoBrakeLevel = 6000
 #error frame 
 error_frame_thres = 2
 YAWN_MIN_FRAME_COUNT = 10
 
 # Funtion printing alert warning on screen and return attenion score of driver
+# Compare the attention score and threshold attention level  
 def warningAlert():
     print (" WARNING ALERT !!! ")
     output_text = " Attention Score " + str(AttentionScore)
-    cv2.putText(frame,output_text,(30,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,255,127),2)
+    cv2.putText(frame,output_text,(150,150),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
     return
 
-# Function to brake the vehicle using CAN protocol
-def autoBrakeLevel():
+def autoBrakeAlert():
     print (" AUTO BRAKE !!! ")
+    output_text = "AUTO BRAKE " + str(AttentionScore)
+    cv2.putText(frame,output_text,(200,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
     return
 
-# Compare the attention score and threshold attention level  
 def checkWarning():
     if(AttentionScore < WarningLevel):
         warningAlert()
     if(AttentionScore < autoBrakeLevel):
-        autoBrakeLevel()
+        autoBrakeAlert()
+    return
 
 # Take a bounding predicted by dlib and convert it
 # to the format (x, y, w, h) as normally handled in OpenCV
@@ -182,19 +184,22 @@ vs = VideoStream(src = 0).start()
 fileStream = False
 
 time.sleep(1.0)
+
 # Variables for yawn detection and frame count are initialized 
+
 yawns = 0
 yawn_status = False 
+# loop over frames from the video stream
+
+
 FRAME_COUNTER_YAWN =0
 FRAME_COUNTER_EYES =0
-error_frame =0
 yawns = 0
 
 # Loop for reading frames and implementing algorithms in it
 while True:
     global frame 
     frame = vs.read()
-    #frame = imutils.resize(frame, width = 450)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 0)
     image_landmarks, lip_distance = mouth_open(frame)
@@ -213,7 +218,7 @@ while True:
         print ("Frame Count: ", FRAME_COUNTER)
 
         # Attention scorer part
-        if(FRAME_COUNTER_YAWN > YAWN_MIN_FRAME_COUNT): 
+        if(FRAME_COUNTER_YAWN > YAWN_MIN_FRAME_COUNT): #and error_frame < error_frame_thres):
                 AttentionScore -=2*FRAME_COUNTER
                 cv2.putText(frame, "Subject is Yawning",(50,450),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
                 checkWarning()
@@ -221,9 +226,9 @@ while True:
     else:
         yawn_status == False
         if (AttentionScore < AttentionScoreMax):
-            AttentionScore +=10
+            AttentionScore +=60
 
-    # Check condition for completion of yawning             
+                 
     if prev_yawn_status == True and yawn_status == False:
         yawns += 1
         FRAME_COUNTER_YAWN = 0
@@ -288,4 +293,3 @@ while True:
 # Cleanup
 cv2.destroyAllWindows()
 vs.stop()
-
