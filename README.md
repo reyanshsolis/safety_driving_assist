@@ -6,7 +6,26 @@ Eye state classification using OpenCV and DLib to estimate Percentage Eye Closur
 
 Uses DLib facial landmark detector to find the major and minor axes of eyes, as well as mouth. The aspect ratio of major to minor axes is used to determine whether eye/mouth is open; which allows for eye-state classification and yawning detection. Requires a pre-trained DLib facial landmark detector model in a .dat file.
 
+
+### The Project has Two Models : 
+
+## Model 1 :  
+(WARNING Signals Part can be implemented by *anyone on any Car with Music System*) (Automous Braking can be implemented on any Bot, however it requires CAN-bus interface for a real Car)
+*   Attention Score is determined on the basis of alertness judged by blinking eyes pattern and yawing rate. 
+WARNING SIGNALS (ALERT SOUND and HAZARD INDICATORS) are activated when Attention Score falls before a certain WARNING LEVEL.
+If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](doc.link) is deployed to stop the vehicle and minimize the damage.
+
+## Model 2:    (This Requires the Car to have [CAN-bus Interface](doc.here) for Autonomous Braking to work and Odometry sensors to return velocity)
+It includes several improvements over first model.
+*   Attention Score Penality rate takes **vehicle's velocity factor** into consideration, as the Attention Penality for closing eyes/yawning at high speed must be greater than that in low speed because of the higher level of required altertness at high speed. Example: Closing Eyes for 1sec at High Speed is much more significant than closing it at very low speed.
+[ATTENTION SCORE ALGORITHM : MODEL 2](doc.here)
+
+*   Improvised Braking Algorithm including factors such as Traffic and nearest object distance into cosideration with velocity of car, braking distance (including reaction time of driver and alertness level).
+[BRAKING ALGORITHM : MODEL 2](doc.here)
+
+
 # Pseudo Code
+## MODEL 1 : 
 ```
 Pseudo Code : 
 
@@ -61,42 +80,11 @@ Eye Blinking detection:
 ```
 
 # Setup and Dependecies
+## [INSTALLATION AND GETTING STARTED GUIDE](https://github.com/reyanshsolis/safety_driving_assist/blob/master/Setup_Getting_Started.md)
 
-
-## dlib library [![Travis Status](https://travis-ci.org/davisking/dlib.svg?branch=master)](https://travis-ci.org/davisking/dlib)
-Dlib is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems. See [http://dlib.net](http://dlib.net) for the main project documentation and API reference.
-We are using the python for coding on **PYNQ** board. Hence dlib's python API is installed.
-
-## Compiling dlib Python API
-Before you can run the Python example programs you must compile dlib. Type:
-```bash
-python setup.py install
-```
-
-## Controller Area Network(CAN) Protocol 
-
-### Now we are fully equiped to understand and implement our code.
-Refer : [INSTALLATION AND GETTING STARTED GUIDE](https://github.com/reyanshsolis/safety_driving_assist/blob/master/Setup_Getting_Started.md)
-## Explanation of code module-wise
-Refer : [Detailed_Code_Explanation.md](https://github.com/reyanshsolis/safety_driving_assist/blob/master/Detailed_Code_Explanation.md)
+## Detailed Explanation of entire Code: [Detailed_Code_Explanation.md](https://github.com/reyanshsolis/safety_driving_assist/blob/master/Detailed_Code_Explanation.md)
 
 ============================================
-
-The Project has Two Models : 
-
-Model 1 :  
-(WARNING Signals Part can be implemented by *anyone on any Car with Music System*) (Automous Braking can be implemented on any Bot, however it requires CAN-bus interface for a real Car)
-    Attention Score is determined on the basis of alertness judged by blinking eyes pattern and yawing rate. 
-    WARNING SIGNALS (ALERT SOUND and HAZARD INDICATORS) are activated when Attention Score falls before a certain WARNING LEVEL.
-    If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](doc.link) is deployed to stop the vehicle and minimize the damage.
-
-Model 2:    (This Requires the Car to have [CAN-bus Interface](doc.here) for Autonomous Braking to work and Odometry sensors to return velocity)
-    It includes several improvements over first model.
-    *   Attention Score Penality rate takes **vehicle's velocity factor** into consideration, as the Attention Penality for closing eyes/yawning at high speed must be greater than that in low speed because of the higher level of required altertness at high speed. Example: Closing Eyes for 1sec at High Speed is much more significant than closing it at very low speed.
-    [ATTENTION SCORE ALGORITHM : MODEL 2](doc.here)
-    *   Improvised Braking Algorithm including factors such as Traffic and nearest object distance into cosideration with velocity of car, braking distance (including reaction time of driver and alertness level).
-    [BRAKING ALGORITHM : MODEL 2](doc.here)
-
 ============================================
 
 
