@@ -120,7 +120,7 @@ def warningAlert():
 def autoBrakeAlert():
     print (" AUTO BRAKE !!! ")
     output_text = "AUTO BRAKE " + str(AttentionScore)
-    cv2.putText(frame,output_text,(200,300),cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)
+    cv2.putText(frame,output_text,(200,250),cv2.FONT_HERSHEY_COMPLEX, 2,(0,0,255),4)
     return
 
 def checkWarning():
@@ -227,6 +227,7 @@ while True:
         yawn_status == False
         if (AttentionScore < AttentionScoreMax):
             AttentionScore +=60
+            checkWarning()
 
                  
     if prev_yawn_status == True and yawn_status == False:
@@ -268,7 +269,11 @@ while True:
             if FRAME_COUNTER_EYES >= EYE_AR_CONSEC_FRAMES:
                 cv2.putText(frame, 'DROWSINESS ALERT!!!', (10, 30), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                
                 AttentionScore-=20*FRAME_COUNTER_EYES
+                if(AttentionScore<=0)
+                    AttentionScore=0
+                checkWarning()
             
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
