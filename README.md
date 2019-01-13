@@ -7,9 +7,17 @@ Eye state classification using OpenCV and DLib to estimate Percentage Eye Closur
 Uses DLib facial landmark detector to find the major and minor axes of eyes, as well as mouth. The aspect ratio of major to minor axes is used to determine whether eye/mouth is open; which allows for eye-state classification and yawning detection. Requires a pre-trained DLib facial landmark detector model in a .dat file.
 
 
-**alertness_driverAssist.ipynb** : jupyter notebook code to run on PYNQ-Z2
-**drowsy_driver_m1.py** : code for model 1 to execute on CPU
-**shape_predictor_68_face_landmarks.dat** : Required a pre-trained DLib facial landmark detector model
+**alertness_driverAssist.ipynb** : 
+	jupyter notebook code to run on PYNQ-Z2
+
+**drowsy_driver_m1.py** : 
+	code for model 1 to execute on CPU
+
+**shape_predictor_68_face_landmarks.dat** : 
+	Required a pre-trained DLib facial landmark detector model
+
+##PLEASE REFER TO [WIKI DOCUMENTAION](https://github.com/reyanshsolis/safety_driving_assist/wiki) OF THIS PROJECT
+
 
 ### The Project has Two Models : 
 
@@ -27,6 +35,7 @@ It includes several improvements over first model.
 *   Improvised Braking Algorithm including factors such as Traffic and nearest object distance into cosideration with velocity of car, braking distance (including reaction time of driver and alertness level).
 [BRAKING ALGORITHM : MODEL 2](https://github.com/reyanshsolis/safety_driving_assist/wiki/Autonomous-Braking-Algorithm)
 
+## Model 3 and 4 explained in [Model 2 Pseudo Code Explanation](https://github.com/reyanshsolis/safety_driving_assist/wiki/Model-2-:-Pseudo-Code)
 
 # Pseudo Code
 ## MODEL 1 : 
