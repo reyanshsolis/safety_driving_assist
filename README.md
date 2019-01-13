@@ -7,21 +7,25 @@ Eye state classification using OpenCV and DLib to estimate Percentage Eye Closur
 Uses DLib facial landmark detector to find the major and minor axes of eyes, as well as mouth. The aspect ratio of major to minor axes is used to determine whether eye/mouth is open; which allows for eye-state classification and yawning detection. Requires a pre-trained DLib facial landmark detector model in a .dat file.
 
 
+**alertness_driverAssist.ipynb** : jupyter notebook code to run on PYNQ-Z2
+**drowsy_driver_m1.py** : code for model 1 to execute on CPU
+**shape_predictor_68_face_landmarks.dat** : Required a pre-trained DLib facial landmark detector model
+
 ### The Project has Two Models : 
 
 ## Model 1 :  
 (WARNING Signals Part can be implemented by *anyone on any Car with Music System*) (Automous Braking can be implemented on any Bot, however it requires CAN-bus interface for a real Car)
 *   Attention Score is determined on the basis of alertness judged by blinking eyes pattern and yawing rate. 
 WARNING SIGNALS (ALERT SOUND and HAZARD INDICATORS) are activated when Attention Score falls before a certain WARNING LEVEL.
-If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](doc.link) is deployed to stop the vehicle and minimize the damage.
+If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](https://github.com/reyanshsolis/safety_driving_assist/wiki/Autonomous-Braking-Algorithm) is deployed to stop the vehicle and minimize the damage.
 
 ## Model 2:    (This Requires the Car to have [CAN-bus Interface](doc.here) for Autonomous Braking to work and Odometry sensors to return velocity)
 It includes several improvements over first model.
 *   Attention Score Penality rate takes **vehicle's velocity factor** into consideration, as the Attention Penality for closing eyes/yawning at high speed must be greater than that in low speed because of the higher level of required altertness at high speed. Example: Closing Eyes for 1sec at High Speed is much more significant than closing it at very low speed.
-[ATTENTION SCORE ALGORITHM : MODEL 2](doc.here)
+[ATTENTION SCORE ALGORITHM : MODEL 2](https://github.com/reyanshsolis/safety_driving_assist/wiki/Model-2-:-Pseudo-Code)
 
 *   Improvised Braking Algorithm including factors such as Traffic and nearest object distance into cosideration with velocity of car, braking distance (including reaction time of driver and alertness level).
-[BRAKING ALGORITHM : MODEL 2](doc.here)
+[BRAKING ALGORITHM : MODEL 2](https://github.com/reyanshsolis/safety_driving_assist/wiki/Autonomous-Braking-Algorithm)
 
 
 # Pseudo Code
