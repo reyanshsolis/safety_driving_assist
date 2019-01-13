@@ -16,9 +16,14 @@ Uses DLib facial landmark detector to find the major and minor axes of eyes, as 
 
 ## PLEASE REFER TO [WIKI DOCUMENTAION](https://github.com/reyanshsolis/safety_driving_assist/wiki) OF THIS PROJECT
 
-# *Result Output : *
+# Result Output : 
+![](https://github.com/reyanshsolis/safety_driving_assist/blob/master/drowsy_driver/output.gif?raw=true)
 
 
+## Setup and Dependecies
+### [INSTALLATION AND GETTING STARTED GUIDE](https://github.com/reyanshsolis/safety_driving_assist/wiki/Getting-Started-and-Setup-Guide)
+
+![](https://github.com/reyanshsolis/myFolder/blob/master/IMG_20190113_214914.jpg?raw=true)	![](https://github.com/reyanshsolis/myFolder/blob/master/IMG_20190113_214828%20(1).jpg?raw=true)
 ### The Project has Two Models : 
 
 ### Model 1 :  [Pseudo Code](https://github.com/reyanshsolis/safety_driving_assist/wiki/Model-1-:-Pseudo-Code)
@@ -36,8 +41,5 @@ It includes several improvements over first model.
 [BRAKING ALGORITHM : MODEL 2](https://github.com/reyanshsolis/safety_driving_assist/wiki/Autonomous-Braking-Algorithm)
 
 ### Model 3 and 4 explained in [Model 2 Pseudo Code Explanation](https://github.com/reyanshsolis/safety_driving_assist/wiki/Model-2-:-Pseudo-Code)
-
-## Setup and Dependecies
-### [INSTALLATION AND GETTING STARTED GUIDE](https://github.com/reyanshsolis/safety_driving_assist/wiki/Getting-Started-and-Setup-Guide)
 
 ### Detailed Explanation of entire Code: [Detailed_Code_Explanation](https://github.com/reyanshsolis/safety_driving_assist/wiki/Detailed-Code-Explanation)
