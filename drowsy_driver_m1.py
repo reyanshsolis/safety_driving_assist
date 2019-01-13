@@ -1,4 +1,8 @@
 # Program to determine the alertness of a driver while driving.  
+# Please visit the Wiki Documentation of this Project : 
+# https://github.com/reyanshsolis/safety_driving_assist/wiki
+# Code, Algorithm, Pseudo Code and SETUP is explained in the wiki documentation
+# github Repository link : https://github.com/reyanshsolis/safety_driving_assist
 
 import cv2
 import dlib
