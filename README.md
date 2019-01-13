@@ -32,7 +32,7 @@ Uses DLib facial landmark detector to find the major and minor axes of eyes, as 
 WARNING SIGNALS (ALERT SOUND and HAZARD INDICATORS) are activated when Attention Score falls before a certain WARNING LEVEL.
 If Driver is still remains asleep,Attention score keeps falling and our [Autonomous Braking Algorithm](https://github.com/reyanshsolis/safety_driving_assist/wiki/Autonomous-Braking-Algorithm) is deployed to stop the vehicle and minimize the damage.
 
-### Model 2:    (This Requires the Car to have [CAN-bus Interface](doc.here) for Autonomous Braking to work and Odometry sensors to return velocity)
+### Model 2:    (This Requires the Car to have [CAN-bus Interface](https://docs.google.com/document/d/1V-D0zt91xsXkLREZtW8yMn8hd-8KXD2_wTG5CpZry_M/edit?usp=sharing) for Autonomous Braking to work and Odometry sensors to return velocity)
 It includes several improvements over first model.
 *   Attention Score Penality rate takes **vehicle's velocity factor** into consideration, as the Attention Penality for closing eyes/yawning at high speed must be greater than that in low speed because of the higher level of required altertness at high speed. Example: Closing Eyes for 1sec at High Speed is much more significant than closing it at very low speed.
 [ATTENTION SCORE ALGORITHM : MODEL 2](https://github.com/reyanshsolis/safety_driving_assist/wiki/Model-2-:-Pseudo-Code)
